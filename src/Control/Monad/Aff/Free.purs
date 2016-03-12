@@ -10,6 +10,9 @@ import Control.Monad.Free (Free(), liftF)
 class Affable eff f where
   fromAff :: forall a. Aff eff a -> f a
 
+instance affableAff :: Affable eff (Aff eff) where
+  fromAff = id
+
 instance affableFree :: (Affable eff f) => Affable eff (Free f) where
   fromAff = liftF <<< fromAff
 
