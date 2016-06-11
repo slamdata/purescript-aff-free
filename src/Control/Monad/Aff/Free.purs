@@ -16,7 +16,7 @@ import Control.Monad.State.Trans (StateT())
 import Control.Monad.Trans (lift)
 import Control.Monad.Writer.Trans (WriterT())
 
-import Data.Monoid (Monoid)
+import Data.Monoid (class Monoid)
 
 class Affable eff f where
   fromAff :: forall a. Aff eff a -> f a
