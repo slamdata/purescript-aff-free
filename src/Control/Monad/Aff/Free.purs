@@ -2,19 +2,19 @@ module Control.Monad.Aff.Free where
 
 import Prelude
 
-import Control.Monad.Aff (Aff())
-import Control.Monad.Cont.Trans (ContT())
-import Control.Monad.Eff (Eff())
+import Control.Monad.Aff (Aff)
+import Control.Monad.Cont.Trans (ContT)
+import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Except.Trans (ExceptT())
-import Control.Monad.Free (Free(), liftF)
-import Control.Monad.List.Trans (ListT())
-import Control.Monad.Maybe.Trans (MaybeT())
-import Control.Monad.Reader.Trans (ReaderT())
-import Control.Monad.RWS.Trans (RWST())
-import Control.Monad.State.Trans (StateT())
-import Control.Monad.Trans (lift)
-import Control.Monad.Writer.Trans (WriterT())
+import Control.Monad.Except.Trans (ExceptT)
+import Control.Monad.Free (Free, liftF)
+import Control.Monad.List.Trans (ListT)
+import Control.Monad.Maybe.Trans (MaybeT)
+import Control.Monad.Reader.Trans (ReaderT)
+import Control.Monad.RWS.Trans (RWST)
+import Control.Monad.State.Trans (StateT)
+import Control.Monad.Trans.Class (lift)
+import Control.Monad.Writer.Trans (WriterT)
 
 import Data.Monoid (class Monoid)
 
@@ -24,7 +24,7 @@ class Affable eff f where
 instance affableAff :: Affable eff (Aff eff) where
   fromAff = id
 
-instance affableFree :: (Affable eff f) => Affable eff (Free f) where
+instance affableFree :: Affable eff f => Affable eff (Free f) where
   fromAff = liftF <<< fromAff
 
 instance monadAffContT :: (Affable eff m, Monad m) => Affable eff (ContT r m) where
@@ -51,5 +51,5 @@ instance monadAffState :: (Affable eff m, Monad m) => Affable eff (StateT s m) w
 instance monadAffWriter :: (Affable eff m, Monad m, Monoid w) => Affable eff (WriterT w m) where
   fromAff = lift <<< fromAff
 
-fromEff :: forall eff f a. (Affable eff f) => Eff eff a -> f a
+fromEff :: forall eff f a. Affable eff f => Eff eff a -> f a
 fromEff eff = fromAff (liftEff eff :: Aff eff a)
