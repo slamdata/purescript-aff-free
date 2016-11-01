@@ -18,7 +18,7 @@ import Control.Monad.Writer.Trans (WriterT)
 
 import Data.Monoid (class Monoid)
 
-class Affable eff f where
+class Affable eff f | f -> eff where
   fromAff :: forall a. Aff eff a -> f a
 
 instance affableAff :: Affable eff (Aff eff) where
