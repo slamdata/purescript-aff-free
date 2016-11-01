@@ -17,7 +17,7 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-aff": "^1.0.0",
-    "purescript-free": "^1.0.0"
+    "purescript-aff": "^2.0.1",
+    "purescript-free": "^3.0.0"
   }
 }
